@@ -9,9 +9,6 @@ import java.awt.event.KeyListener;
 
 public class GameplayPanel extends JPanel implements KeyListener, ActionListener {
 
-
-    private ImageIcon imagenTitulo = new ImageIcon(".\\src\\main\\resources\\img\\snaketitle.jpg");
-
     // primera posicion de ambos array es la cabeza de la serpiente
     private int[] posicionX = new int[750];
     private int[] posicionY = new int[750];
@@ -21,7 +18,7 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
     private boolean movimientoDerecha = false;
     private boolean movimientoIzquierda = false;
 
-    private int largoSerpiente = 3; // largo inicial de la serpiente
+    private ImageIcon imagenTitulo = new ImageIcon(".\\src\\main\\resources\\img\\snaketitle.jpg");
 
     private ImageIcon imagenBocaArriba = new ImageIcon(".\\src\\main\\resources\\img\\upmouth.png");
     private ImageIcon imagenBocaAbajo = new ImageIcon(".\\src\\main\\resources\\img\\downmouth.png");
@@ -30,13 +27,15 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
 
     private ImageIcon imagenCuerpoSerpiente = new ImageIcon(".\\src\\main\\resources\\img\\snakeimage.png");
 
+    private int largoSerpiente = 3; // largo inicial de la serpiente
+
     private Timer timer;
-    private int delay = 100;
+    private int delay = 100; // milisegundos
 
     private int cantidadMovimientos = 0;
 
+
     public GameplayPanel(){
-        // posision por defecto de la serpiente
         this.addKeyListener(this);
         this.setFocusable(true);
         this.setFocusTraversalKeysEnabled(false);
@@ -76,6 +75,7 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
         // posicion inicial de serpiente
         imagenBocaDerecha.paintIcon(this, g, posicionX[0], posicionY[0]);
 
+        // dibujo la serpiente
         for(int i=0; i < largoSerpiente; i++){
 
             // i = 0 es decir posicionX[0], posicionY[0] representa la cabeza de la serpiente
@@ -112,10 +112,38 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
     public void actionPerformed(ActionEvent e) {
         timer.start();
         if(movimientoArriba){
+            for(int i = largoSerpiente - 1; i>=0; i--){
+                posicionX[i+1] = posicionX[i];
+            }
+            for(int i = largoSerpiente; i>=0; i--){
+                if(i == 0){
+                    posicionY[i] = posicionY[i] - 25;
+                }else{
+                    posicionY[i] = posicionY[i-1];
+                }
 
+                if(posicionY[i] < 75){
+                    posicionY[i] = 625;
+                }
+            }
+            repaint(); // hace un call al metodo paint() y ejecuta toda la implemetacion que hiciste
         }
         if(movimientoAbajo){
+            for(int i = largoSerpiente - 1; i>=0; i--){
+                posicionX[i+1] = posicionX[i];
+            }
+            for(int i = largoSerpiente; i>=0; i--){
+                if(i == 0){
+                    posicionY[i] = posicionY[i] + 25;
+                }else{
+                    posicionY[i] = posicionY[i-1];
+                }
 
+                if(posicionY[i] > 625){
+                    posicionY[i] = 75;
+                }
+            }
+            repaint(); // hace un call al metodo paint() y ejecuta toda la implemetacion que hiciste
         }
         if(movimientoDerecha){
             for(int i = largoSerpiente - 1; i>=0; i--){
@@ -132,70 +160,74 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
                     posicionX[i] = 25;
                 }
             }
-            repaint();
+            repaint(); // hace un call al metodo paint() y ejecuta toda la implemetacion que hiciste
         }
-        if(movimientoAbajo){
+        if(movimientoIzquierda){
+            for(int i = largoSerpiente - 1; i>=0; i--){
+                posicionY[i+1] = posicionY[i];
+            }
+            for(int i = largoSerpiente; i>=0; i--){
+                if(i == 0){
+                    posicionX[i] = posicionX[i] - 25;
+                }else{
+                    posicionX[i] = posicionX[i-1];
+                }
 
+                if(posicionX[i] < 25){
+                    posicionX[i] = 850;
+                }
+            }
+            repaint(); // hace un call al metodo paint() y ejecuta toda la implemetacion que hiciste
         }
-    }
-
-    public void keyTyped(KeyEvent e) {
-
     }
 
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_UP){
             cantidadMovimientos++;
-            if(!movimientoAbajo){
-                movimientoArriba = true;
-            }else{
-                //movimientoDerecha = true;
+            if(movimientoAbajo){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia abajo
                 movimientoArriba = false;
+            }else{
+                movimientoArriba = true;
             }
-
             movimientoDerecha = false;
             movimientoIzquierda= false;
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN){
             cantidadMovimientos++;
-            if(!movimientoArriba){
-                movimientoAbajo = true;
-            }else{
-                //movimientoDerecha = true;
+            if(movimientoArriba){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia arriba
                 movimientoAbajo = false;
+            }else{
+                movimientoAbajo = true;
             }
-
             movimientoDerecha = false;
             movimientoIzquierda= false;
         }
         if(e.getKeyCode() == KeyEvent.VK_RIGHT){
             cantidadMovimientos++;
-            //movimientoDerecha = true;
-            if(!movimientoIzquierda){
-                movimientoDerecha = true;
-            }else{
+            if(movimientoIzquierda){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia izquierda
                 movimientoDerecha = false;
-                //movimientoIzquierda = true;
+            }else{
+                movimientoDerecha = true;
             }
-
             movimientoArriba = false;
             movimientoAbajo = false;
         }
         if(e.getKeyCode() == KeyEvent.VK_LEFT){
             cantidadMovimientos++;
-            if(!movimientoDerecha){
-                movimientoIzquierda = true;
-            }else{
-                //movimientoDerecha = true;
+            if(movimientoDerecha){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia derecha
                 movimientoIzquierda = false;
+            }else{
+                movimientoIzquierda = true;
             }
-
             movimientoArriba = false;
             movimientoAbajo = false;
         }
     }
 
     public void keyReleased(KeyEvent e) {
+
+    }
+    public void keyTyped(KeyEvent e) {
 
     }
 }
