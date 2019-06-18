@@ -9,18 +9,19 @@ import java.awt.event.KeyListener;
 
 public class GameplayPanel extends JPanel implements KeyListener, ActionListener {
 
+
     private ImageIcon imagenTitulo = new ImageIcon(".\\src\\main\\resources\\img\\snaketitle.jpg");
 
     // primera posicion de ambos array es la cabeza de la serpiente
     private int[] posicionX = new int[750];
     private int[] posicionY = new int[750];
 
-    private boolean flechaArriba = false;
-    private boolean flechaAbajo = false;
-    private boolean flechaDerecha = false;
-    private boolean flechaIzquierda = false;
+    private boolean movimientoArriba = false;
+    private boolean movimientoAbajo = false;
+    private boolean movimientoDerecha = false;
+    private boolean movimientoIzquierda = false;
 
-    private int largoSerpiente = 3;
+    private int largoSerpiente = 3; // largo inicial de la serpiente
 
     private ImageIcon imagenBocaArriba = new ImageIcon(".\\src\\main\\resources\\img\\upmouth.png");
     private ImageIcon imagenBocaAbajo = new ImageIcon(".\\src\\main\\resources\\img\\downmouth.png");
@@ -46,7 +47,7 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
     @Override
     public void paint(Graphics g) {
 
-        // este if se ejecutara la primera vez que inicia el juego
+        // este if se ejecutara la primera vez que inicia el juego y representa la posicion inicial de la serpiente dentro del area de juego
         if( cantidadMovimientos == 0){
             posicionX[2] = 50;
             posicionX[1] = 75;
@@ -77,40 +78,65 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
 
         for(int i=0; i < largoSerpiente; i++){
 
-            // i = 0 entonces recien solo tiene la cara sin cuerpo
+            // i = 0 es decir posicionX[0], posicionY[0] representa la cabeza de la serpiente
 
             // segun los booleanos de direccion va a mostrarse la imagen de la boca segun correcponda
-            if( i==0 && flechaDerecha){
+            if( i==0 && movimientoDerecha){
                 imagenBocaDerecha = new ImageIcon(".\\src\\main\\resources\\img\\rightmouth.png");
                 imagenBocaDerecha.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
-            if( i==0 && flechaIzquierda){
+            if( i==0 && movimientoIzquierda){
                 imagenBocaIzquierda = new ImageIcon(".\\src\\main\\resources\\img\\leftmouth.png");
                 imagenBocaIzquierda.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
-            if( i==0 && flechaArriba){
+            if( i==0 && movimientoArriba){
                 imagenBocaArriba =  new ImageIcon(".\\src\\main\\resources\\img\\upmouth.png");
                 imagenBocaArriba.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
-            if( i==0 && flechaAbajo){
+            if( i==0 && movimientoAbajo){
                 imagenBocaAbajo = new ImageIcon(".\\src\\main\\resources\\img\\downmouth.png");
                 imagenBocaAbajo.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
 
-            // si i no es cero (es decir agarro comida) entonces hay que dibujar el cuerpo
+            // i != 0 representa el cuerpo
 
             if(i!=0){
                 imagenCuerpoSerpiente = new ImageIcon(".\\src\\main\\resources\\img\\snakeimage.png");
                 imagenCuerpoSerpiente.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
-            cantidadMovimientos++;
         }
 
         g.dispose();
     }
 
     public void actionPerformed(ActionEvent e) {
+        timer.start();
+        if(movimientoArriba){
 
+        }
+        if(movimientoAbajo){
+
+        }
+        if(movimientoDerecha){
+            for(int i = largoSerpiente - 1; i>=0; i--){
+                posicionY[i+1] = posicionY[i];
+            }
+            for(int i = largoSerpiente; i>=0; i--){
+                if(i == 0){
+                   posicionX[i] = posicionX[i] + 25;
+                }else{
+                    posicionX[i] = posicionX[i-1];
+                }
+
+                if(posicionX[i] > 850){
+                    posicionX[i] = 25;
+                }
+            }
+            repaint();
+        }
+        if(movimientoAbajo){
+
+        }
     }
 
     public void keyTyped(KeyEvent e) {
@@ -118,11 +144,58 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
     }
 
     public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_UP){
+            cantidadMovimientos++;
+            if(!movimientoAbajo){
+                movimientoArriba = true;
+            }else{
+                //movimientoDerecha = true;
+                movimientoArriba = false;
+            }
 
+            movimientoDerecha = false;
+            movimientoIzquierda= false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_DOWN){
+            cantidadMovimientos++;
+            if(!movimientoArriba){
+                movimientoAbajo = true;
+            }else{
+                //movimientoDerecha = true;
+                movimientoAbajo = false;
+            }
+
+            movimientoDerecha = false;
+            movimientoIzquierda= false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+            cantidadMovimientos++;
+            //movimientoDerecha = true;
+            if(!movimientoIzquierda){
+                movimientoDerecha = true;
+            }else{
+                movimientoDerecha = false;
+                //movimientoIzquierda = true;
+            }
+
+            movimientoArriba = false;
+            movimientoAbajo = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+            cantidadMovimientos++;
+            if(!movimientoDerecha){
+                movimientoIzquierda = true;
+            }else{
+                //movimientoDerecha = true;
+                movimientoIzquierda = false;
+            }
+
+            movimientoArriba = false;
+            movimientoAbajo = false;
+        }
     }
 
     public void keyReleased(KeyEvent e) {
 
     }
 }
-// 30:36
