@@ -46,6 +46,17 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
     @Override
     public void paint(Graphics g) {
 
+        // este if se ejecutara la primera vez que inicia el juego
+        if( cantidadMovimientos == 0){
+            posicionX[2] = 50;
+            posicionX[1] = 75;
+            posicionX[0] = 100;
+
+            posicionY[2] = 100;
+            posicionY[1] = 100;
+            posicionY[0] = 100;
+        }
+
         // dibujar el borde blanco de la imagen del titulo
         g.setColor(Color.WHITE);
         g.drawRect(24,10,851,55);
@@ -65,17 +76,6 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
         imagenBocaDerecha.paintIcon(this, g, posicionX[0], posicionY[0]);
 
         for(int i=0; i < largoSerpiente; i++){
-
-            // este if se ejecutara la primera vez que inicia el juego
-            if( cantidadMovimientos == 0){
-                posicionX[2] = 50;
-                posicionX[1] = 75;
-                posicionX[0] = 100;
-
-                posicionY[2] = 100;
-                posicionY[1] = 100;
-                posicionY[0] = 100;
-            }
 
             // i = 0 entonces recien solo tiene la cara sin cuerpo
 
@@ -125,3 +125,4 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
 
     }
 }
+// 30:36
