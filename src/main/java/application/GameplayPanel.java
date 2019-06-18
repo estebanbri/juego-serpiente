@@ -13,10 +13,10 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
     private int[] posicionX = new int[750];
     private int[] posicionY = new int[750];
 
-    private boolean movimientoArriba = false;
-    private boolean movimientoAbajo = false;
-    private boolean movimientoDerecha = false;
-    private boolean movimientoIzquierda = false;
+    private boolean arriba = false;
+    private boolean abajo = false;
+    private boolean derecha = false;
+    private boolean izquierda = false;
 
     private ImageIcon imagenTitulo = new ImageIcon(".\\src\\main\\resources\\img\\snaketitle.jpg");
 
@@ -81,19 +81,19 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
             // i = 0 es decir posicionX[0], posicionY[0] representa la cabeza de la serpiente
 
             // segun los booleanos de direccion va a mostrarse la imagen de la boca segun correcponda
-            if( i==0 && movimientoDerecha){
+            if( i==0 && derecha){
                 imagenBocaDerecha = new ImageIcon(".\\src\\main\\resources\\img\\rightmouth.png");
                 imagenBocaDerecha.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
-            if( i==0 && movimientoIzquierda){
+            if( i==0 && izquierda){
                 imagenBocaIzquierda = new ImageIcon(".\\src\\main\\resources\\img\\leftmouth.png");
                 imagenBocaIzquierda.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
-            if( i==0 && movimientoArriba){
+            if( i==0 && arriba){
                 imagenBocaArriba =  new ImageIcon(".\\src\\main\\resources\\img\\upmouth.png");
                 imagenBocaArriba.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
-            if( i==0 && movimientoAbajo){
+            if( i==0 && abajo){
                 imagenBocaAbajo = new ImageIcon(".\\src\\main\\resources\\img\\downmouth.png");
                 imagenBocaAbajo.paintIcon(this, g, posicionX[i], posicionY[i]);
             }
@@ -111,7 +111,7 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
 
     public void actionPerformed(ActionEvent e) {
         timer.start();
-        if(movimientoArriba){
+        if(arriba){
             for(int i = largoSerpiente - 1; i>=0; i--){
                 posicionX[i+1] = posicionX[i];
             }
@@ -128,7 +128,7 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
             }
             repaint(); // hace un call al metodo paint() y ejecuta toda la implemetacion que hiciste
         }
-        if(movimientoAbajo){
+        if(abajo){
             for(int i = largoSerpiente - 1; i>=0; i--){
                 posicionX[i+1] = posicionX[i];
             }
@@ -145,7 +145,7 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
             }
             repaint(); // hace un call al metodo paint() y ejecuta toda la implemetacion que hiciste
         }
-        if(movimientoDerecha){
+        if(derecha){
             for(int i = largoSerpiente - 1; i>=0; i--){
                 posicionY[i+1] = posicionY[i];
             }
@@ -162,7 +162,7 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
             }
             repaint(); // hace un call al metodo paint() y ejecuta toda la implemetacion que hiciste
         }
-        if(movimientoIzquierda){
+        if(izquierda){
             for(int i = largoSerpiente - 1; i>=0; i--){
                 posicionY[i+1] = posicionY[i];
             }
@@ -184,43 +184,43 @@ public class GameplayPanel extends JPanel implements KeyListener, ActionListener
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_UP){
             cantidadMovimientos++;
-            if(movimientoAbajo){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia abajo
-                movimientoArriba = false;
+            if(abajo){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia abajo
+                arriba = false;
             }else{
-                movimientoArriba = true;
+                arriba = true;
             }
-            movimientoDerecha = false;
-            movimientoIzquierda= false;
+            derecha = false;
+            izquierda = false;
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN){
             cantidadMovimientos++;
-            if(movimientoArriba){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia arriba
-                movimientoAbajo = false;
+            if(arriba){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia arriba
+                abajo = false;
             }else{
-                movimientoAbajo = true;
+                abajo = true;
             }
-            movimientoDerecha = false;
-            movimientoIzquierda= false;
+            derecha = false;
+            izquierda = false;
         }
         if(e.getKeyCode() == KeyEvent.VK_RIGHT){
             cantidadMovimientos++;
-            if(movimientoIzquierda){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia izquierda
-                movimientoDerecha = false;
+            if(izquierda){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia izquierda
+                derecha = false;
             }else{
-                movimientoDerecha = true;
+                derecha = true;
             }
-            movimientoArriba = false;
-            movimientoAbajo = false;
+            arriba = false;
+            abajo = false;
         }
         if(e.getKeyCode() == KeyEvent.VK_LEFT){
             cantidadMovimientos++;
-            if(movimientoDerecha){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia derecha
-                movimientoIzquierda = false;
+            if(derecha){ // if para prevenir colision de la cabeza cuando la serpiente ya se encuentra en movimiento hacia derecha
+                izquierda = false;
             }else{
-                movimientoIzquierda = true;
+                izquierda = true;
             }
-            movimientoArriba = false;
-            movimientoAbajo = false;
+            arriba = false;
+            abajo = false;
         }
     }
 
