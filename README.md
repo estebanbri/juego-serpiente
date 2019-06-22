@@ -1,4 +1,4 @@
-# Serpiente (Juego)
+# Serpiente en Java
 
 ![Alt text](https://github.com/estebanbri/serpiente/blob/master/src/main/resources/img/juego.png?raw=true "Juego")
 
